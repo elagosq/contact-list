@@ -27,11 +27,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      ["expo-community-flipper", {
-        "Flipper": "0.150.0"
-      }]
-    ]
+    }
   }
 }
