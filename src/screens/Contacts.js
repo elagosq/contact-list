@@ -1,4 +1,4 @@
-import React, { useEffect,useLayoutEffect,useContext } from 'react';
+import React, { useEffect,useLayoutEffect,useContext, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -61,7 +61,7 @@ useEffect(() => {
   
   }, []);
 
- const handleOpenUrl = (event) => {
+  const handleOpenUrl = (event) => {
    const { navigate } = navigation
    const { url } = event;
    console.log('url '+url);
@@ -80,6 +80,10 @@ useEffect(() => {
     }
    }
  }
+
+ const NavigationContactProfile = useCallback(id => {
+    navigation.navigate('Profile', { id });
+ },[navigation]);
   
  const renderContact = ({item}) => {
     const { id,name,avatar,phone } = item;
@@ -89,7 +93,7 @@ useEffect(() => {
         name={name} 
         avatar={avatar} 
         phone={phone}
-        onPress={() => navigation.navigate('Profile',{ id })} 
+        onPress={() => NavigationContactProfile(id) } 
       />
      )
  }

@@ -1,4 +1,4 @@
-import React,{ useContext,useLayoutEffect } from "react";
+import React,{ useCallback, useContext,useEffect,useLayoutEffect } from "react";
 import { StyleSheet,View,TouchableOpacity } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -13,8 +13,14 @@ const Profile = ({ route }) => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
   const { params: { id }} = route;
-  const { contactsObject:{ contacts } } = useContext(ContactContext);
+  const { contactsObject:{ contacts },userContacto } = useContext(ContactContext);
   const contactObj = contacts.find(contact => contact.id === id);
+  
+  
+  const goBackPrevView = useCallback(() => {
+     navigation.goBack()
+  },[navigation]);
+
 
   useLayoutEffect(() => {
      navigation.setOptions({
@@ -25,13 +31,18 @@ const Profile = ({ route }) => {
        },
        headerLeft: () => (
         <TouchableOpacity                
-           onPress={() => navigation.goBack()}
+           onPress={() => goBackPrevView() }
          >
          <Feather style = {{paddingLeft : 10}} name="arrow-left" size={26} color={theme.headerIcon} />
        </TouchableOpacity>
       ),
      });
-},[navigation,theme]);
+},[theme]);
+
+useEffect(() => {
+  console.log('contactObj '+contactObj);
+  userContacto(contactObj);
+}, []);
 
 return (
   <View style={styles.container}>

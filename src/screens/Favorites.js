@@ -36,7 +36,7 @@ const Favorites = ({ navigation }) => {
      },[navigation,theme]);
      
      
-     const NavigationProfile = useCallback(id => {
+     const NavigationFavoriteProfile = useCallback(id => {
        navigation.navigate('Profile',{ id });
      },[navigation]);
 
@@ -45,7 +45,7 @@ const Favorites = ({ navigation }) => {
        return (
          <ContactThumbnail 
             avatar={avatar}
-            onPress={() => NavigationProfile(id) }
+            onPress={() => NavigationFavoriteProfile(id) }
          />
        )
      } 
