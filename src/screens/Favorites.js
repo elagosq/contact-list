@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { 
  StyleSheet,
  Text,
@@ -35,14 +35,17 @@ const Favorites = ({ navigation }) => {
       });
      },[navigation,theme]);
      
+     
+     const NavigationProfile = useCallback(id => {
+       navigation.navigate('Profile',{ id });
+     },[navigation]);
 
-
-     const renderFavoriteThumbnail = ({item}) => {
+    const renderFavoriteThumbnail = ({item}) => {
        const { id,avatar } = item;
        return (
          <ContactThumbnail 
             avatar={avatar}
-            onPress={() => navigation.navigate('Profile',{ id })}
+            onPress={() => NavigationProfile(id) }
          />
        )
      } 

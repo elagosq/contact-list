@@ -13,11 +13,14 @@ import colors from '../utils/colors';
 import getURLParams from '../utils/getURLParams';
 import ContactContext from '../context/contacts/contactContext';
 import { ThemeContext } from '../context/theme/theme-context';
+import { useNavigation } from '@react-navigation/native';
+
 
 const keyExtractor = ({ phone }) => phone;
 
-const Contacts = ({ navigation }) => {
+const Contacts = () => {  
 const { theme } = useContext(ThemeContext);
+const navigation = useNavigation();
 const { ListContacts,errorParamsName,contactsObject } = useContext(ContactContext);
 const { contacts,loading,error } = contactsObject; 
 
@@ -26,7 +29,7 @@ useLayoutEffect(() => {
     headerStyle : {
        backgroundColor: theme.backgroundHeader  
     }, 
-    title: 'Contacts',
+    title: 'Contact',
     headerTintColor: theme.headerTitle,
     headerLeft: () => (
      <MaterialIcons
@@ -40,10 +43,10 @@ useLayoutEffect(() => {
 
 
 useEffect(() => {
-  console.log('.......')
-  
   ListContacts();
+},[]) 
 
+useEffect(() => {
   const urlOpen =  async () => {
     Linking.addEventListener('url', handleOpenUrl);
     const url = await Linking.getInitialURL();
@@ -56,7 +59,7 @@ useEffect(() => {
     Linking.removeAllListeners('url', handleOpenUrl);
   }
   
-  }, [contacts]);
+  }, []);
 
  const handleOpenUrl = (event) => {
    const { navigate } = navigation
@@ -66,12 +69,12 @@ useEffect(() => {
    
    console.log("params "+ params.name);
 
-   if(params.name === undefined) return
+   if(params.name) return
 
    if(params.name){
     const urlNameObject = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
     if(urlNameObject){
-       navigate('Profile',{id : urlNameObject.id})
+       navigate('Profile', {id : urlNameObject.id})
     }else{
       errorParamsName()
     }

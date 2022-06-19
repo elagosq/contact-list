@@ -10,7 +10,8 @@ const Sidebar = ({...props}) => {
    <DrawerContentScrollView {...props}>
     <DrawerItemList {...props} />
     <View style={styles.contenedor}>
-        <Text style={{color:theme.colorTextSwicthTheme}}>Dark mode</Text>  
+       <View style={styles.contenedorSwitch}>
+        <Text style={[styles.iconPosition,{color:theme.colorTextSwicthTheme}]}>Light</Text>  
         <Switch 
           trackColor={{ false: theme.BackgroundSwicthTrackColor, true: theme.BackgroundSwicthTrackColor }}
           thumbColor={dark ? theme.colorActiveSwitchThumbColor : theme.colorActiveSwitchThumbColor}
@@ -18,6 +19,8 @@ const Sidebar = ({...props}) => {
           onValueChange={toggle} 
           value={dark}
         />
+        <Text style={[styles.iconPosition,{color:theme.colorTextSwicthTheme}]}>Dark</Text> 
+      </View>   
     </View>
   </DrawerContentScrollView>   
   )
@@ -29,6 +32,13 @@ const styles = StyleSheet.create({
    flexDirection:'column',
    alignItems:'center',
    marginTop:50
+  },
+  iconPosition:{
+    marginHorizontal:10
+  },
+  contenedorSwitch:{
+    flexDirection:'row',
+    alignItems:'center'
   }  
 })
 
