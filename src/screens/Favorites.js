@@ -6,7 +6,7 @@ import {
  FlatList,
  ActivityIndicator 
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import ContactThumbnail from '../components/ContactThumbnail';
 import ContactoContext from '../context/contacts/contactContext';
@@ -14,9 +14,10 @@ import { ThemeContext } from '../context/theme/theme-context';
 
 const keyExtractor = ({ phone }) => phone; 
 
-const Favorites = ({ navigation }) => {
+const Favorites = () => {
+    const navigation = useNavigation(); 
     const { theme } = useContext(ThemeContext);
-    const { contactsObject } = useContext(ContactoContext);
+    const { contactsObject, ListContacts } = useContext(ContactoContext);
 
     useEffect(() => {
       navigation.setOptions({
@@ -34,11 +35,18 @@ const Favorites = ({ navigation }) => {
         )
       });
      },[navigation,theme]);
-     
-     
-     const NavigationFavoriteProfile = useCallback(id => {
-       navigation.navigate('Profile',{ id });
+    
+    
+     useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => ListContacts());
+      return () => unsubscribe;
      },[navigation]);
+
+     
+    const NavigationFavoriteProfile = useCallback(id => {
+       navigation.navigate('Profile',{ id });
+    },[navigation]);
+
 
     const renderFavoriteThumbnail = ({item}) => {
        const { id,avatar } = item;
@@ -50,8 +58,8 @@ const Favorites = ({ navigation }) => {
        )
      } 
 
-     const { loading, contacts, error} = contactsObject;
-     const favorites = contacts.filter(contact => contact.favorite);
+    const { loading, contacts, error} = contactsObject;
+    const favorites = contacts.filter(contact => contact.favorite);
     return(
        <View style={[styles.container,{ backgroundColor : theme.backgroundColor}]}>
          {loading && <ActivityIndicator  size="large" /> }

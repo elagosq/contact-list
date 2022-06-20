@@ -43,8 +43,9 @@ useLayoutEffect(() => {
 
 
 useEffect(() => {
-  ListContacts();
-},[]) 
+  const unsubscribe = navigation.addListener('focus', () => ListContacts());
+  return unsubscribe;
+},[navigation]) 
 
 useEffect(() => {
   const urlOpen =  async () => {
@@ -99,13 +100,14 @@ useEffect(() => {
  }
 
 const contactsSorted = contacts.sort((a,b) =>  a.name.localeCompare(b.name));
-
+console.log('contact loading ' + loading);
+console.log('contact error ' +error);
 return (
    <View style={[styles.container,{backgroundColor: theme.backgroundColor}]}>
     {loading && <Loading color={colors.blue} />}
     {error && <Text>Error...</Text> }
     {!loading && 
-    !error && (
+     !error && (
         <FlatList 
           data={contactsSorted}
           keyExtractor={keyExtractor}

@@ -13,11 +13,10 @@ export default (state,action) => {
       return {
          ...state,
          user : action.payload,
-         loading : false,
-         error : false
+         activeProfile:true
       }
       case ERROR_URL_NAME:
-      return{
+      return {
          ...state,
          error : true
       }   

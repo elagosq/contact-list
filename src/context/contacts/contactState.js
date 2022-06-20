@@ -8,10 +8,11 @@ import ContactReducer from './contactReducer';
 const contactState = ({children}) => {
   
   const initialState = {
-     loading: true,
-     contacts: [],    
-     user: {},
-     error: false
+    loading: true,
+    contacts: [],    
+    user: {},
+    error: false,
+    activeProfile:false
   }
 
    //Crear dispatch y state

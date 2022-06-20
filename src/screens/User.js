@@ -1,26 +1,31 @@
-import React,{ useEffect, useContext } from 'react';
+import React,{ useEffect, useContext, useCallback } from 'react';
 import { 
   View,
   Text,
   StyleSheet
 } from 'react-native'; 
 import { MaterialIcons } from '@expo/vector-icons';
-import Loading from '../utils/loading';
-import colors from '../utils/colors';
+import { useNavigation } from '@react-navigation/native';
 import ContactThumbnail from '../components/ContactThumbnail';
 import ContactoContext from '../context/contacts/contactContext';
 import { ThemeContext } from '../context/theme/theme-context';
 
 
-const User = ({navigation}) => {
+const User = () => {
   const { theme } = useContext(ThemeContext);
-  const { contactsObject,userContacto } = useContext(ContactoContext);  
+  const navigation = useNavigation();
+  const { contactsObject } = useContext(ContactoContext);  
+     
+  const ClickToggleDrawer = useCallback(() => {
+    navigation.toggleDrawer()
+  },[navigation]);
+
+  const ClickNavigationOptions = useCallback(() => {
+    navigation.navigate('Options');
+  },[navigation]);
 
   useEffect(() => {
-    
-    userContacto();
-
-    navigation.setOptions({
+   navigation.setOptions({
       headerStyle : {
         backgroundColor: theme.backgroundHeader  
       }, 
@@ -31,7 +36,7 @@ const User = ({navigation}) => {
           name="menu"
           size={24}
           style={{ color: theme.headerIcon, marginLeft: 10 }}
-          onPress={() => navigation.toggleDrawer()}
+          onPress={() => ClickToggleDrawer()}
         />
       ),
       headerRight: () => (
@@ -39,21 +44,22 @@ const User = ({navigation}) => {
           name="settings"
           size={24}
           style={{ color : theme.headerIcon, marginRight: 10}}
-          onPress={() => navigation.navigate('Options')}
+          onPress={() => ClickNavigationOptions()}
         />
       ),
       });
-  },[navigation,theme]);
+  },[theme]);
 
- 
-
-    const {loading,user, error } = contactsObject;
-    const { avatar, name, phone } = user; 
-
-    return(
+  const {user:{avatar, name, phone}, error,loading } = contactsObject;
+  //  console.log(avatar);
+  //  console.log(name);
+  //  console.log(phone);
+   console.log('error user '+error);
+   console.log('loading user '+loading);
+   
+   return(
        <View style={[styles.container,{backgroundColor:theme.backgroundColor}]}>
-        {loading && <Loading color={colors.white} /> }
-        {error && <Text>Error....</Text>}
+        {!error && <Text style={{color:theme.titleDetails}}>No hay usuario seleccionado.</Text>}
         {!loading && (
           <ContactThumbnail avatar={avatar} name={name} phone={phone} />  
         )}
