@@ -12,7 +12,7 @@ const contactState = ({children}) => {
     contacts: [],    
     user: {},
     error: false,
-    activeProfile:false
+    activeProfile:true
   }
 
    //Crear dispatch y state

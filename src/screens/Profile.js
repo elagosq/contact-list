@@ -40,7 +40,6 @@ const Profile = ({ route }) => {
 },[navigation,theme]);
 
 useEffect(() => {
-  console.log('contactObj '+JSON.stringify(contactObj));
   userContacto(contactObj);
 }, []);
 

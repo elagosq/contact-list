@@ -10,7 +10,6 @@ import ContactThumbnail from '../components/ContactThumbnail';
 import ContactoContext from '../context/contacts/contactContext';
 import { ThemeContext } from '../context/theme/theme-context';
 
-
 const User = () => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
@@ -50,19 +49,14 @@ const User = () => {
       });
   },[theme]);
 
-  const {user:{avatar, name, phone}, error,loading } = contactsObject;
-  //  console.log(avatar);
-  //  console.log(name);
-  //  console.log(phone);
-   console.log('error user '+error);
-   console.log('loading user '+loading);
+  const {user:{avatar, name, phone}, error,loading,activeProfile } = contactsObject;
+  console.log('Active Profile '+activeProfile);
    
    return(
        <View style={[styles.container,{backgroundColor:theme.backgroundColor}]}>
-        {!error && <Text style={{color:theme.titleDetails}}>No hay usuario seleccionado.</Text>}
-        {!loading && (
+        {!activeProfile ? (
           <ContactThumbnail avatar={avatar} name={name} phone={phone} />  
-        )}
+        ): (<Text style={{color:theme.titleDetails}}>No hay usuario seleccionado.</Text>)}
        </View>
     );
 
