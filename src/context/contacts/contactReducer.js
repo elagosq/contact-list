@@ -7,7 +7,7 @@ export default (state,action) => {
           ...state, 
           contacts : action.payload, 
           loading: false,
-          error:false 
+          error: false 
       };  
       case SELECTION_USER:
       return {

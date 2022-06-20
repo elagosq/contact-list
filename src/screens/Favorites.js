@@ -17,7 +17,7 @@ const keyExtractor = ({ phone }) => phone;
 const Favorites = () => {
     const navigation = useNavigation(); 
     const { theme } = useContext(ThemeContext);
-    const { contactsObject, ListContacts } = useContext(ContactoContext);
+    const { contactsObject } = useContext(ContactoContext);
 
     useEffect(() => {
       navigation.setOptions({
@@ -37,11 +37,6 @@ const Favorites = () => {
      },[navigation,theme]);
     
     
-     useEffect(() => {
-      const unsubscribe = navigation.addListener('focus', () => ListContacts());
-      return () => unsubscribe;
-     },[navigation]);
-
      
     const NavigationFavoriteProfile = useCallback(id => {
        navigation.navigate('Profile',{ id });
@@ -59,10 +54,11 @@ const Favorites = () => {
      } 
 
     const { loading, contacts, error} = contactsObject;
+    //filter los contacto que en su propiedad favorite tenga asignado el valor true. 
     const favorites = contacts.filter(contact => contact.favorite);
     return(
        <View style={[styles.container,{ backgroundColor : theme.backgroundColor}]}>
-         {loading && <ActivityIndicator  size="large" /> }
+         {/* {loading && <ActivityIndicator  size="large" /> } */}
          {error && <Text>Error...</Text>}
          {!loading &&
           !error && (
