@@ -1,13 +1,26 @@
 import React,{useContext} from 'react';
 import { Switch,View,StyleSheet,Text } from 'react-native';
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList, useDrawerProgress } from '@react-navigation/drawer';
 import { ThemeContext } from '../context/theme/theme-context';
+import Animated,{ interpolate,Extrapolate, useAnimatedStyle } from 'react-native-reanimated';
 
-const Sidebar = ({...props}) => {
+const Sidebar = (props) => {
+  const progress = useDrawerProgress();
   const { dark,theme,toggle } = useContext(ThemeContext);
   
+  const animatedStyles = useAnimatedStyle(() => {
+    const translateX = interpolate(progress.value,  [0, 1], [1, 0.8],{
+      extrapolateRight: Extrapolate.CLAMP,
+    });
+    return {
+      transform: [{translateX}],
+    }
+  });
+  
+ 
   return (
    <DrawerContentScrollView {...props}>
+   <Animated.View style={animatedStyles}>
     <DrawerItemList {...props} />
     <View style={styles.contenedor}>
        <View style={styles.contenedorSwitch}>
@@ -22,6 +35,7 @@ const Sidebar = ({...props}) => {
         <Text style={[styles.iconPosition,{color:theme.colorTextSwicthTheme}]}>Dark</Text> 
       </View>   
     </View>
+   </Animated.View>   
   </DrawerContentScrollView>   
   )
 }
