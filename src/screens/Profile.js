@@ -13,7 +13,7 @@ const Profile = ({ route }) => {
   const { theme } = useContext(ThemeContext);
   const navigation = useNavigation();
   const { params: { id }} = route;
-  const { contactsObject:{ contacts,activeProfile },userContacto } = useContext(ContactContext);
+  const { contactsObject:{ contacts },userContacto } = useContext(ContactContext);
   const contactObj = contacts.find(contact => contact.id === id);
   
   

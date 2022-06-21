@@ -14,10 +14,6 @@ import Sidebar from './components/Siderbar';
 import { ThemeContext } from './context/theme/theme-context';
 
 
-const getDrawerItemIcon = (icon,color,fontSize) => (
-  <MaterialIcons name={icon} size={fontSize} color={color} />
-);
-
 const Stack = createNativeStackNavigator();
 
 const ContactsScreens = () => {
@@ -93,25 +89,14 @@ const Routes = () => {
         <Drawer.Screen 
            name="ItemContact" 
            component={ContactsScreens}
-           options={{
-             drawerLabel:"Contact",
-             drawerIcon:({color}) => (getDrawerItemIcon('list',color,22))
-          }} />
+          />
         <Drawer.Screen 
            name="ItemFavorite" 
-           component={FavoritesScreens}
-           options = {{
-            drawerLabel:"Favorite",
-            drawerIcon:({color}) => ( getDrawerItemIcon('star',color,22) ) 
-           }} 
+           component={FavoritesScreens} 
         />
         <Drawer.Screen 
           name="ItemUser" 
           component={UserScreens} 
-          options = {{
-            drawerLabel:"User",
-            drawerIcon:({color}) => ( getDrawerItemIcon('person',color,22) ) 
-          }} 
         />
       </Drawer.Navigator>
   </NavigationContainer>

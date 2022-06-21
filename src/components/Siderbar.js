@@ -1,15 +1,34 @@
-import React,{useContext} from 'react';
+import React,{useCallback, useContext} from 'react';
 import { Switch,View,StyleSheet,Text } from 'react-native';
-import { DrawerContentScrollView, DrawerItemList, useDrawerProgress } from '@react-navigation/drawer';
+import { DrawerContentScrollView, useDrawerProgress } from '@react-navigation/drawer';
 import { ThemeContext } from '../context/theme/theme-context';
 import Animated,{ interpolate,Extrapolate, useAnimatedStyle } from 'react-native-reanimated';
+import MenuButtonItem from './MenuButtonItem';
+import BackButton from './BackButton';
 
-const Sidebar = (props) => {
+const Sidebar = ({navigation}) => {
   const progress = useDrawerProgress();
   const { dark,theme,toggle } = useContext(ThemeContext);
   
+  const handlePressBackButton = useCallback(() => {
+     navigation.closeDrawer();
+  },[navigation]);
+
+  const handlePressMenuContact = useCallback(() => {
+     navigation.navigate('ItemContact');
+  }, [navigation]);
+
+  const handlePressMenuFavorite = useCallback(() => {
+     navigation.navigate('ItemFavorite')
+  },[navigation]);
+
+  const handlePressMenuUser = useCallback(() => {
+     navigation.navigate('ItemUser')
+  },[navigation]);
+
+
   const animatedStyles = useAnimatedStyle(() => {
-    const translateX = interpolate(progress.value,  [0, 1], [1, 0.8],{
+    const translateX = interpolate(progress.value, [0, 1], [1, 0.8], {
       extrapolateRight: Extrapolate.CLAMP,
     });
     return {
@@ -17,12 +36,41 @@ const Sidebar = (props) => {
     }
   });
   
- 
-  return (
-   <DrawerContentScrollView {...props}>
+ return (
+   <DrawerContentScrollView
+     style={styles.contenedor}
+   >
    <Animated.View style={animatedStyles}>
-    <DrawerItemList {...props} />
-    <View style={styles.contenedor}>
+    {/* <DrawerItemList {...props} /> */}
+    <Text style={styles.titleDrawer}>Menú</Text>
+    <BackButton 
+      icon="arrow-back-ios"
+      size={22}
+      color="white" 
+      onPress={handlePressBackButton}
+    />
+    <MenuButtonItem 
+      text="Contact"
+      icon="list"
+      size={22}
+      color="red"
+      onPress={handlePressMenuContact}
+    />
+    <MenuButtonItem 
+      text="Favorite"
+      icon="star"
+      color="red"
+      size={22}
+      onPress={handlePressMenuFavorite}
+    />
+    <MenuButtonItem 
+      text="User"
+      icon="person"
+      color="red"
+      size={22}
+      onPress={handlePressMenuUser}
+    />
+    <View style={styles.contSwitch}>
        <View style={styles.contenedorSwitch}>
         <Text style={[styles.iconPosition,{color:theme.colorTextSwicthTheme}]}>Light</Text>  
         <Switch 
@@ -42,7 +90,15 @@ const Sidebar = (props) => {
 
 const styles = StyleSheet.create({
   contenedor:{
-   display: 'flex',
+    padding:15     
+  },
+  titleDrawer:{
+    fontSize:20,
+    fontWeight:'bold',
+    marginBottom:20,
+  },
+  contSwitch:{
+   display:'flex',
    flexDirection:'column',
    alignItems:'center',
    marginTop:50

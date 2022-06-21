@@ -48,7 +48,7 @@ useEffect(() => {
 },[navigation]) 
 
 useEffect(() => {
-  const urlOpen =  async () => {
+  const urlOpen = async () => {
     Linking.addEventListener('url', handleOpenUrl);
     const url = await Linking.getInitialURL();
     handleOpenUrl({ url });
@@ -59,27 +59,23 @@ useEffect(() => {
   return () => {
     Linking.removeAllListeners('url', handleOpenUrl);
   }
-  
   }, []);
 
   const handleOpenUrl = (event) => {
-   const { navigate } = navigation
-   const { url } = event;
-   console.log('url '+url);
-   const params = getURLParams(url);
+    const { url } = event;
+    const params = getURLParams(url);
    
-   console.log("params "+ params.name);
+    console.log("params "+ params.name);
 
-   if(params.name) return
-
-   if(params.name){
     const urlNameObject = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
+    
+    console.log('urlName '+urlNameObject);
+    
     if(urlNameObject){
-       navigate('Profile', {id : urlNameObject.id})
+      NavigationContactProfile(urlNameObject.id)
     }else{
-      errorParamsName()
+      errorParamsName();
     }
-   }
  }
 
  const NavigationContactProfile = useCallback(id => {
@@ -100,8 +96,8 @@ useEffect(() => {
  }
 
 const contactsSorted = contacts.sort((a,b) =>  a.name.localeCompare(b.name));
-console.log('contact loading ' + loading);
-console.log('contact error ' +error);
+// console.log('contact loading ' + loading);
+// console.log('contact error ' +error);
 return (
    <View style={[styles.container,{backgroundColor: theme.backgroundColor}]}>
     {loading && <Loading color={colors.blue} />}
