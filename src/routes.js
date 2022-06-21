@@ -80,9 +80,7 @@ const Routes = () => {
           drawerStyle: {
             backgroundColor: theme.backgroundColor
           },
-          headerShown:false,
-          drawerActiveTintColor:  theme.colorTextActiveSidebar,
-          drawerInactiveTintColor: theme.colorTextInactiveSidebar
+          headerShown:false
         }}
         drawerContent={props => <Sidebar {...props} />}
         >

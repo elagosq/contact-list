@@ -27,9 +27,3 @@ export const fetchContacts = async () => {
  
 };
 
-export const fetchRandomContact = async () => {
-  const response = await fetch('https://randomuser.me/api/');
-  const userData = await response.json();
-
-  return mapContact(userData.results[0]);
-};

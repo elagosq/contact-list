@@ -41,12 +41,10 @@ const Sidebar = ({navigation}) => {
      style={styles.contenedor}
    >
    <Animated.View style={animatedStyles}>
-    {/* <DrawerItemList {...props} /> */}
-    <Text style={styles.titleDrawer}>Menú</Text>
+    <Text style={[styles.titleDrawer,{color:theme.headerTitle}]}>Menú</Text>
     <BackButton 
       icon="arrow-back-ios"
       size={22}
-      color="white" 
       onPress={handlePressBackButton}
     />
     <MenuButtonItem 

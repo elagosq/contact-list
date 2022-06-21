@@ -1,11 +1,10 @@
 import React from 'react';
+import { color } from 'react-native-reanimated';
 import colors from "../../utils/colors";
 
 const themes = {
     dark: {
       backgroundColor:colors.black,
-      colorTextActiveSidebar:colors.greyLight,
-      colorTextInactiveSidebar:colors.greyDark,
       colorTextSwicthTheme: colors.white,
       colorActiveSwitchThumbColor:colors.blue,
       BackgroundSwicthTrackColor:colors.white,
@@ -15,12 +14,14 @@ const themes = {
       rowClickBackgroundColor:colors.black,
       contactInfoBorderBottom: colors.white,
       titleDetails:colors.white,
-      subTitleDetails:colors.white  
+      subTitleDetails:colors.white,
+      colorBorderButton: colors.white,
+      colorIcon:colors.white,
+      sidebarItems:colors.blue,
+      sidebarItemColor:colors.white
     },
     light: {
       backgroundColor:colors.white,
-      colorTextActiveSidebar:colors.blue,
-      colorTextInactiveSidebar:colors.black,
       colorTextSwicthTheme: colors.black,
       colorActiveSwitchThumbColor:colors.black,
       BackgroundSwicthTrackColor:colors.blue,
@@ -30,7 +31,11 @@ const themes = {
       rowClickBackgroundColor:colors.greyDark, 
       contactInfoBorderBottom:colors.grey,
       titleDetails:colors.black,
-      subTitleDetails:colors.blue
+      subTitleDetails:colors.blue,
+      colorBorderButton:colors.blue,
+      colorIcon: colors.blue,
+      sidebarItems:colors.greyLight,
+      sidebarItemColor:colors.black
     }
 }
 
@@ -50,6 +55,7 @@ function ThemeProvider({ children }) {
       setDark(!dark)
   }
   
+
   const theme = dark ? themes.dark : themes.light
 
   return (
