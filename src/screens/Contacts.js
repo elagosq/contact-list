@@ -14,7 +14,7 @@ import getURLParams from '../utils/getURLParams';
 import ContactContext from '../context/contacts/contactContext';
 import { ThemeContext } from '../context/theme/theme-context';
 import { useNavigation } from '@react-navigation/native';
-
+//import useUrl from '../hook/useUrl';
 
 const keyExtractor = ({ phone }) => phone;
 
@@ -23,6 +23,8 @@ const { theme } = useContext(ThemeContext);
 const navigation = useNavigation();
 const { ListContacts,errorParamsName,contactsObject } = useContext(ContactContext);
 const { contacts,loading,error } = contactsObject; 
+
+//console.log('contacts 1'+ JSON.stringify(contacts));
 
 useLayoutEffect(() => {
   navigation.setOptions({
@@ -45,46 +47,49 @@ useLayoutEffect(() => {
 useEffect(() => {
   const unsubscribe = navigation.addListener('focus', () => ListContacts());
   return unsubscribe;
-},[navigation]) 
+},[navigation]); 
+
 
 useEffect(() => {
   const urlOpen = async () => {
     Linking.addEventListener('url', handleOpenUrl);
     const url = await Linking.getInitialURL();
-    handleOpenUrl({ url });
+    handleOpenUrl({url});
   }
-  
-  urlOpen();
- 
-  return () => {
-    Linking.removeAllListeners('url', handleOpenUrl);
-  }
-  }, []);
 
-  const handleOpenUrl = (event) => {
+  urlOpen();
+
+  return () => {
+    //Linking.remove('url', handleOpenUrl);
+    Linking.remove('url');
+  }
+}, []);
+
+
+function handleOpenUrl (event) {
+    console.log('url '+event.url);
     const { url } = event;
     const params = getURLParams(url);
-   
     console.log("params "+ params.name);
+    console.log('contacts '+ contacts);
 
-    const urlNameObject = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
-    
-    console.log('urlName '+urlNameObject);
-    
-    if(urlNameObject){
-      NavigationContactProfile(urlNameObject.id)
-    }else{
-      errorParamsName();
-    }
+    if(params.name && contacts.length > 0){
+      const querieContact = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
+      //console.log('querieContact '+JSON.stringify(querieContact));
+      
+      if(querieContact){
+         NavigationContactProfile(querieContact.id)
+      }
+    }   
  }
 
  const NavigationContactProfile = useCallback(id => {
     navigation.navigate('Profile', { id });
  },[navigation]);
+
   
  const renderContact = ({item}) => {
-    const { id,name,avatar,phone } = item;
-
+     const { id,name,avatar,phone } = item;
      return (
      <ContactListItem 
         name={name} 
@@ -97,7 +102,7 @@ useEffect(() => {
 
 const contactsSorted = contacts.sort((a,b) =>  a.name.localeCompare(b.name));
 // console.log('contact loading ' + loading);
-// console.log('contact error ' +error);
+console.log('contact error ' +error);
 return (
    <View style={[styles.container,{backgroundColor: theme.backgroundColor}]}>
     {loading && <Loading color={colors.blue} />}
