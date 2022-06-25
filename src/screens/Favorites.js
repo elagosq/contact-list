@@ -39,7 +39,7 @@ const Favorites = () => {
     
      
     const NavigationFavoriteProfile = useCallback(id => {
-       navigation.navigate('Profile',{ id });
+       navigation.navigate('ProfileScreen',{ id });
     },[navigation]);
 
 

@@ -15,15 +15,15 @@ const Sidebar = ({navigation}) => {
   },[navigation]);
 
   const handlePressMenuContact = useCallback(() => {
-     navigation.navigate('ItemContact');
+     navigation.navigate('Contact');
   }, [navigation]);
 
   const handlePressMenuFavorite = useCallback(() => {
-     navigation.navigate('ItemFavorite')
+     navigation.navigate('Favorite')
   },[navigation]);
 
   const handlePressMenuUser = useCallback(() => {
-     navigation.navigate('ItemUser')
+     navigation.navigate('User')
   },[navigation]);
 
 

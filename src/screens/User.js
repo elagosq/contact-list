@@ -20,7 +20,7 @@ const User = () => {
   },[navigation]);
 
   const ClickNavigationOptions = useCallback(() => {
-    navigation.navigate('Options');
+    navigation.navigate('OptionScreen');
   },[navigation]);
 
   useEffect(() => {

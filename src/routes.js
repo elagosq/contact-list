@@ -2,7 +2,7 @@ import React,{ useContext } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import Favorites from './screens/Favorites';
@@ -19,12 +19,13 @@ const Stack = createNativeStackNavigator();
 const ContactsScreens = () => {
    return (
       <Stack.Navigator
+        initialRouteName="ContactScreen"
        >
         <Stack.Screen 
-         name="Contact" 
+         name="ContactScreen" 
          component={Contacts} />
         <Stack.Screen 
-         name="Profile" 
+         name="ProfileScreen" 
          component={Profile} 
         />
       </Stack.Navigator>
@@ -34,14 +35,13 @@ const ContactsScreens = () => {
 const FavoritesScreens = () => {
   return (
      <Stack.Navigator
-       mode='modal'
-       initialRouteName='Favorites'
+       initialRouteName='FavoriteScreen'
       >
        <Stack.Screen 
-        name="Favorite" 
+        name="FavoriteScreen" 
         component={Favorites} />
        <Stack.Screen 
-        name="Profile" 
+        name="ProfileScreen" 
         component={Profile} 
        />
      </Stack.Navigator>
@@ -51,18 +51,62 @@ const FavoritesScreens = () => {
 const UserScreens = () => {
   return (
      <Stack.Navigator
-     initialRouteName='User'
+        initialRouteName='UserScreen'
       >
      <Stack.Screen 
-        name="User" 
+        name="UserScreen" 
         component={User} 
      />
       <Stack.Screen 
-        name="Options" 
+        name="OptionScreen" 
         component={Options} 
      />
      </Stack.Navigator>
    );
+}
+
+
+const Tab = createBottomTabNavigator();
+
+const Tabs = () => {
+  const { theme } = useContext(ThemeContext);
+  return (
+    <Tab.Navigator
+     screenOptions={{
+      tabBarActiveTintColor:theme.colorBottomBarActive,
+      tabBarInactiveTintColor:theme.colorBottomBarInactive,
+      tabBarLabelStyle: { fontSize: 12,fontWeight:'bold' },
+      tabBarStyle: {
+        height: 90,
+        backgroundColor: theme.backgroundColor,
+        borderTopWidth: 0
+       },
+       headerShown:false
+     }}
+    >
+     <Tab.Screen 
+       name="Contact" 
+       component={ContactsScreens} 
+       options={{
+         tabBarIcon: () => ( <MaterialIcons name="list" size={22} style={{color:theme.colorBottomBarIcon}} /> )
+       }} 
+      />
+     <Tab.Screen 
+       name="Favorite" 
+       component={FavoritesScreens} 
+       options={{
+         tabBarIcon: () => ( <MaterialIcons name="star" size={22} style={{color:theme.colorBottomBarIcon}} />)
+       }}
+       />
+     <Tab.Screen 
+       name="User"  
+       component={UserScreens}
+       options={{
+         tabBarIcon: () => (<MaterialIcons name="person" size={22} style={{color:theme.colorBottomBarIcon}} />)
+       }}
+      />
+   </Tab.Navigator> 
+ )
 }
 
 
@@ -80,11 +124,15 @@ const Routes = () => {
           drawerStyle: {
             backgroundColor: theme.backgroundColor
           },
-          headerShown:false
+          headerShown : false
         }}
         drawerContent={props => <Sidebar {...props} />}
         >
-        <Drawer.Screen 
+        <Drawer.Screen
+          name="TabsScreen"
+          component={Tabs}
+        />
+        {/* <Drawer.Screen 
            name="ItemContact" 
            component={ContactsScreens}
           />
@@ -95,7 +143,7 @@ const Routes = () => {
         <Drawer.Screen 
           name="ItemUser" 
           component={UserScreens} 
-        />
+        /> */}
       </Drawer.Navigator>
   </NavigationContainer>
   )

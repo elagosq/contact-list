@@ -18,7 +18,10 @@ const themes = {
       colorBorderButton: colors.white,
       colorIcon:colors.white,
       sidebarItems:colors.blue,
-      sidebarItemColor:colors.white
+      sidebarItemColor:colors.white,
+      colorBottomBarActive:colors.white,
+      colorBottomBarInactive:colors.blue,
+      colorBottomBarIcon:colors.white
     },
     light: {
       backgroundColor:colors.white,
@@ -35,7 +38,10 @@ const themes = {
       colorBorderButton:colors.blue,
       colorIcon: colors.blue,
       sidebarItems:colors.greyLight,
-      sidebarItemColor:colors.black
+      sidebarItemColor:colors.black,
+      colorBottomBarActive:colors.black,
+      colorBottomBarInactive:colors.blue,
+      colorBottomBarIcon:colors.black,
     }
 }
 

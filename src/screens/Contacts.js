@@ -78,13 +78,13 @@ function handleOpenUrl (event) {
       //console.log('querieContact '+JSON.stringify(querieContact));
       
       if(querieContact){
-         NavigationContactProfile(querieContact.id)
+         //NavigationContactProfile(querieContact.id)
       }
     }   
  }
 
  const NavigationContactProfile = useCallback(id => {
-    navigation.navigate('Profile', { id });
+    navigation.navigate('ProfileScreen', { id });
  },[navigation]);
 
   
