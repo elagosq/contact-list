@@ -1,5 +1,5 @@
 # Contact-list
-expo, react-navigation, api context y useReducer.
+expo, react-navigation, api context,useReducer, y dark mode.
 </br>
 #Listado contacto
 </br>
