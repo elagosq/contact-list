@@ -1,4 +1,4 @@
-import { FETCHING_CONTACTS,FETCHING_USER,ERROR_URL_NAME } from '../../types';
+import { FETCHING_CONTACTS,SELECTION_USER,ERROR_URL_NAME } from '../../types';
 
 export default (state,action) => {
    switch(action.type){
@@ -7,17 +7,16 @@ export default (state,action) => {
           ...state, 
           contacts : action.payload, 
           loading: false,
-          error:false 
+          error: false 
       };  
-      case FETCHING_USER:
+      case SELECTION_USER:
       return {
          ...state,
          user : action.payload,
-         loading : false,
-         error : false
+         activeProfile:false
       }
       case ERROR_URL_NAME:
-      return{
+      return {
          ...state,
          error : true
       }   

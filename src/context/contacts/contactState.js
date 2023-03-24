@@ -1,6 +1,6 @@
 import React,{ useReducer } from 'react';
-import { FETCHING_CONTACTS, FETCHING_USER,ERROR_URL_NAME } from '../../types';
-import { fetchContacts,fetchUserContact } from '../../utils/api';
+import { FETCHING_CONTACTS, SELECTION_USER,ERROR_URL_NAME } from '../../types';
+import { fetchContacts } from '../../utils/api';
 import ContactContext from './contactContext';
 import ContactReducer from './contactReducer';
 
@@ -8,10 +8,11 @@ import ContactReducer from './contactReducer';
 const contactState = ({children}) => {
   
   const initialState = {
-     loading: true,
-     contacts: [],    
-     user: {},
-     error: false
+    loading: true,
+    contacts: [],    
+    user: {},
+    error: false,
+    activeProfile:true
   }
 
    //Crear dispatch y state
@@ -31,13 +32,12 @@ const contactState = ({children}) => {
      }
    }
    
-   //Obtener un usuario de la lista de contacto
-   const userContacto = async () => {
+   //Obtener un usuario seleccionado desde la vista Profile.
+   const userContacto =  (contactuser) => {
      try {
-       const resultado = await fetchUserContact();
        dispatch({
-         type: FETCHING_USER,
-         payload: resultado
+         type: SELECTION_USER,
+         payload: contactuser
        });
      } catch (error) {
        console.log('error ' +error);
