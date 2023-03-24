@@ -1,5 +1,4 @@
 import React from 'react';
-import { color } from 'react-native-reanimated';
 import colors from "../../utils/colors";
 
 const themes = {

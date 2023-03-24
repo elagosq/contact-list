@@ -34,7 +34,6 @@ const contactState = ({children}) => {
    
    //Obtener un usuario seleccionado desde la vista Profile.
    const userContacto =  (contactuser) => {
-    console.log('contactuser '+ JSON.stringify(contactuser));
      try {
        dispatch({
          type: SELECTION_USER,
