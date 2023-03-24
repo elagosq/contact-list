@@ -1,6 +1,7 @@
-import React,{ useContext,useLayoutEffect } from "react";
+import React,{ useCallback, useContext,useEffect,useLayoutEffect } from "react";
 import { StyleSheet,View,TouchableOpacity } from "react-native";
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 import ContactContext  from '../context/contacts/contactContext';
 import ContactThumbnail from '../components/ContactThumbnail';
 import DetailListItem from '../components/DetailListItem';
@@ -8,11 +9,18 @@ import DetailListItem from '../components/DetailListItem';
 import { ThemeContext } from '../context/theme/theme-context';
 import colors from '../utils/colors';
 
-const Profile = ({ navigation,route }) => {
+const Profile = ({ route }) => {
   const { theme } = useContext(ThemeContext);
+  const navigation = useNavigation();
   const { params: { id }} = route;
-  const { contactsObject:{ contacts } } = useContext(ContactContext);
+  const { contactsObject:{ contacts },userContacto } = useContext(ContactContext);
   const contactObj = contacts.find(contact => contact.id === id);
+  
+  
+  const goBackPrevView = useCallback(() => {
+     navigation.goBack()
+  },[navigation]);
+
 
   useLayoutEffect(() => {
      navigation.setOptions({
@@ -23,7 +31,7 @@ const Profile = ({ navigation,route }) => {
        },
        headerLeft: () => (
         <TouchableOpacity                
-           onPress={() => navigation.goBack()}
+           onPress={() => goBackPrevView() }
          >
          <Feather style = {{paddingLeft : 10}} name="arrow-left" size={26} color={theme.headerIcon} />
        </TouchableOpacity>
@@ -31,15 +39,19 @@ const Profile = ({ navigation,route }) => {
      });
 },[navigation,theme]);
 
+useEffect(() => {
+  userContacto(contactObj);
+}, []);
+
 return (
   <View style={styles.container}>
-      <View style={styles.avatarSection}>
-        <ContactThumbnail avatar={contactObj?.avatar} name={contactObj?.name} phone={contactObj?.phone} />
-      </View>
-      <View style={[styles.detailsSection,{backgroundColor:theme.backgroundColor}]}>
-        <DetailListItem icon="mail" title="Email" subtitle={contactObj?.email} />
-        <DetailListItem icon="phone" title="Work" subtitle={contactObj?.phone} />
-        <DetailListItem icon="smartphone" title="Personal" subtitle={contactObj?.cell} />
+    <View style={styles.avatarSection}>
+      <ContactThumbnail avatar={contactObj?.avatar} name={contactObj?.name} phone={contactObj?.phone} />
+    </View>
+    <View style={[styles.detailsSection,{backgroundColor:theme.backgroundColor}]}>
+      <DetailListItem icon="mail" title="Email" subtitle={contactObj?.email} />
+      <DetailListItem icon="phone" title="Work" subtitle={contactObj?.phone} />
+      <DetailListItem icon="smartphone" title="Personal" subtitle={contactObj?.cell} />
       </View>
   </View>  
  )

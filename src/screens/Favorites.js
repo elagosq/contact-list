@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { 
  StyleSheet,
  Text,
@@ -6,7 +6,7 @@ import {
  FlatList,
  ActivityIndicator 
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import ContactThumbnail from '../components/ContactThumbnail';
 import ContactoContext from '../context/contacts/contactContext';
@@ -14,7 +14,8 @@ import { ThemeContext } from '../context/theme/theme-context';
 
 const keyExtractor = ({ phone }) => phone; 
 
-const Favorites = ({ navigation }) => {
+const Favorites = () => {
+    const navigation = useNavigation(); 
     const { theme } = useContext(ThemeContext);
     const { contactsObject } = useContext(ContactoContext);
 
@@ -34,24 +35,30 @@ const Favorites = ({ navigation }) => {
         )
       });
      },[navigation,theme]);
+    
+    
      
+    const NavigationFavoriteProfile = useCallback(id => {
+       navigation.navigate('ProfileScreen',{ id });
+    },[navigation]);
 
 
-     const renderFavoriteThumbnail = ({item}) => {
+    const renderFavoriteThumbnail = ({item}) => {
        const { id,avatar } = item;
        return (
          <ContactThumbnail 
             avatar={avatar}
-            onPress={() => navigation.navigate('Profile',{ id })}
+            onPress={() => NavigationFavoriteProfile(id) }
          />
        )
      } 
 
-     const { loading, contacts, error} = contactsObject;
-     const favorites = contacts.filter(contact => contact.favorite);
+    const { loading, contacts, error} = contactsObject;
+    //filter los contacto que en su propiedad favorite tenga asignado el valor true. 
+    const favorites = contacts.filter(contact => contact.favorite);
     return(
        <View style={[styles.container,{ backgroundColor : theme.backgroundColor}]}>
-         {loading && <ActivityIndicator  size="large" /> }
+         {/* {loading && <ActivityIndicator  size="large" /> } */}
          {error && <Text>Error...</Text>}
          {!loading &&
           !error && (

@@ -19,20 +19,21 @@ export default function ContactThumbnail({
   onPress,
 }) {
   const { theme } = useContext(ThemeContext);
- const ImageComponent = onPress ? TouchableOpacity : View;
+  const ImageComponent = onPress ? TouchableOpacity : View;
+  
+  //console.log(avatar);
 
   return (
     <View style={styles.container}>
       <ImageComponent onPress={onPress}>
         <Image
           source={{
-            uri: avatar,
+            uri: avatar != undefined ? avatar : null,
           }}
           style={styles.avatar}
         />
       </ImageComponent>
       {name !== '' && <Text style={[styles.name, {color:theme.headerTitle}]}>{name}</Text>}
-
       {phone !== '' && (
         <View style={styles.phoneSection}>
           <MaterialIcons name="phone" size={16} style={{ color: theme.headerIcon }} />

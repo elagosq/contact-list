@@ -1,4 +1,4 @@
-import React, { useEffect,useLayoutEffect,useContext } from 'react';
+import React, { useEffect,useLayoutEffect,useContext, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,20 +13,25 @@ import colors from '../utils/colors';
 import getURLParams from '../utils/getURLParams';
 import ContactContext from '../context/contacts/contactContext';
 import { ThemeContext } from '../context/theme/theme-context';
+import { useNavigation } from '@react-navigation/native';
+//import useUrl from '../hook/useUrl';
 
 const keyExtractor = ({ phone }) => phone;
 
-const Contacts = ({ navigation }) => {
+const Contacts = () => {  
 const { theme } = useContext(ThemeContext);
+const navigation = useNavigation();
 const { ListContacts,errorParamsName,contactsObject } = useContext(ContactContext);
 const { contacts,loading,error } = contactsObject; 
+
+//console.log('contacts 1'+ JSON.stringify(contacts));
 
 useLayoutEffect(() => {
   navigation.setOptions({
     headerStyle : {
        backgroundColor: theme.backgroundHeader  
     }, 
-    title: 'Contacts',
+    title: 'Contact',
     headerTintColor: theme.headerTitle,
     headerLeft: () => (
      <MaterialIcons
@@ -40,65 +45,70 @@ useLayoutEffect(() => {
 
 
 useEffect(() => {
-  console.log('.......')
-  
-  ListContacts();
+  const unsubscribe = navigation.addListener('focus', () => ListContacts());
+  return unsubscribe;
+},[navigation]); 
 
-  const urlOpen =  async () => {
+
+useEffect(() => {
+  const urlOpen = async () => {
     Linking.addEventListener('url', handleOpenUrl);
     const url = await Linking.getInitialURL();
-    handleOpenUrl({ url });
+    handleOpenUrl({url});
   }
-  
+
   urlOpen();
- 
+
   return () => {
-    Linking.removeAllListeners('url', handleOpenUrl);
+    //Linking.remove('url', handleOpenUrl);
+    Linking.remove('url');
   }
-  
-  }, [contacts]);
+}, []);
 
- const handleOpenUrl = (event) => {
-   const { navigate } = navigation
-   const { url } = event;
-   console.log('url '+url);
-   const params = getURLParams(url);
-   
-   console.log("params "+ params.name);
 
-   if(params.name === undefined) return
+function handleOpenUrl (event) {
+    console.log('url '+event.url);
+    const { url } = event;
+    const params = getURLParams(url);
+    console.log("params "+ params.name);
+    console.log('contacts '+ contacts);
 
-   if(params.name){
-    const urlNameObject = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
-    if(urlNameObject){
-       navigate('Profile',{id : urlNameObject.id})
-    }else{
-      errorParamsName()
-    }
-   }
+    if(params.name && contacts.length > 0){
+      const querieContact = contacts.find(contact => contact.name.split(' ')[0].toLowerCase() === params.name.toLowerCase())
+      //console.log('querieContact '+JSON.stringify(querieContact));
+      
+      if(querieContact){
+         //NavigationContactProfile(querieContact.id)
+      }
+    }   
  }
+
+ const NavigationContactProfile = useCallback(id => {
+    navigation.navigate('ProfileScreen', { id });
+ },[navigation]);
+
   
  const renderContact = ({item}) => {
-    const { id,name,avatar,phone } = item;
-
+     const { id,name,avatar,phone } = item;
      return (
      <ContactListItem 
         name={name} 
         avatar={avatar} 
         phone={phone}
-        onPress={() => navigation.navigate('Profile',{ id })} 
+        onPress={() => NavigationContactProfile(id) } 
       />
      )
  }
 
 const contactsSorted = contacts.sort((a,b) =>  a.name.localeCompare(b.name));
-
+// console.log('contact loading ' + loading);
+console.log('contact error ' +error);
 return (
    <View style={[styles.container,{backgroundColor: theme.backgroundColor}]}>
     {loading && <Loading color={colors.blue} />}
     {error && <Text>Error...</Text> }
     {!loading && 
-    !error && (
+     !error && (
         <FlatList 
           data={contactsSorted}
           keyExtractor={keyExtractor}
